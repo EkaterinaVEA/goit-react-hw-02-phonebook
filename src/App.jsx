@@ -1,7 +1,7 @@
 import './App.css';
 import { Component } from 'react';
-import Swal from 'sweetalert2';
-import shortid from 'shortid';
+// import Swal from 'sweetalert2';
+// import shortid from 'shortid';
 import { RiContactsFill, RiUserAddFill } from 'react-icons/ri';
 import FilterContacts from './helpers/FilterContacts';
 
@@ -9,8 +9,8 @@ import { Section } from './components/Section/Section';
 import { Container } from './components/Container/Container';
 import { ContainerContacts, ContainerAdd } from './components/Container/Container.styles';
 import PhoneBookList from './components/PhoneBookList/PhoneBooklist';
-import PhoneBookForm from './components/PhoneBookForm/PhoneBookForm';
-import Filter from './components/Filter/Filter';
+import { PhoneBookForm } from './components/PhoneBookForm/PhoneBookForm';
+import { Filter } from './components/Filter/Filter';
 
 class App extends Component {
   state = {
@@ -20,35 +20,7 @@ class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    name: '',
-    number: '',
     filter: '',
-  };
-
-  handleSetUserInfo = e => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  handleAddContact = e => {
-    e.preventDefault();
-    if (this.state.contacts.some(el => el.name === this.state.name)) {
-      return Swal.fire({
-        position: 'center',
-        title: `Sorry, ${this.state.name} is already in contacts!`,
-      });
-    }
-    const contact = {
-      name: this.state.name,
-      number: this.state.number,
-      id: shortid.generate(),
-    };
-    this.setState(prev => ({
-      contacts: [...prev.contacts, contact],
-      name: '',
-      number: '',
-    }));
   };
 
   handleDeleteContact = e => {
@@ -57,11 +29,11 @@ class App extends Component {
     });
   };
 
-  handleChangeFilter = e => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
+  // handleChangeFilter = e => {
+  //   this.setState({
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   render() {
     const contacts = FilterContacts(this.state.contacts, this.state.filter);
@@ -73,12 +45,7 @@ class App extends Component {
               <h1>
                 <RiUserAddFill /> Add Contact
               </h1>
-              <PhoneBookForm
-                name={this.state.name}
-                number={this.state.number}
-                onAddContact={this.handleAddContact}
-                onSetUserInfo={this.handleSetUserInfo}
-              />
+              <PhoneBookForm name={this.state.name} number={this.state.number} />
             </ContainerAdd>
 
             <ContainerContacts>
@@ -86,7 +53,10 @@ class App extends Component {
                 <RiContactsFill />
                 Contacts
               </h2>
-              <Filter filterValue={this.state.filter} onSetFilter={this.handleChangeFilter} />
+              <Filter
+                filterValue={this.state.filter}
+                // onSetFilter={this.handleChangeFilter}
+              />
               {contacts.length > 0 && (
                 <PhoneBookList onDeleteContact={this.handleDeleteContact} contacts={contacts} />
               )}
